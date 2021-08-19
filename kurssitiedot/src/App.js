@@ -45,15 +45,7 @@ const App = () => {
       ]
     }
   ]
-/*
-joo {props.course.parts.map(part => {
-                return (
-                <Part key = {part.id} name ={part.name} exercises = {part.exercises}>
-                   {part.name}
-                </Part>
-                )
-            })}
-*/
+
   return (
     <div>
       {courses.map(course => {
