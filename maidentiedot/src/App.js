@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import FilterForm from "./Components/FilterForm"
-import CountryDetails from './Components/CountryDetails'
 import ListCountries from './Components/ListCountries'
-
 
 const App = () => {
   const [countryData, setCountryData] = useState([])
   const [filterText, setFilterText] = useState('')
-  const [countryList, setCountryList] = useState('')
+  
   
   useEffect(() => {
     console.log('effect')
@@ -22,19 +20,28 @@ const App = () => {
   
   console.log('render', countryData.length, 'notes')
 
-  const handleFilterChange = ( event ) => {
-    event.preventDefault()
+  const filterCountries = () => {
+    return countryData.filter(country => country.name.includes(filterText))
+  }
+
+
+  const handleButton = (event) => {
+    console.log(event.target.value)
     setFilterText(event.target.value)
-    
+  }
+
+  const handleTargetChange = (event) => {
+    setFilterText(event.target.value)
   }
   
-
+  
   return (
   <div>
-    <FilterForm input={filterText} handleFilterChange={handleFilterChange} /> 
+    
+    <FilterForm filterText ={filterText} handleFilterChange={handleTargetChange} /> 
     <ul>
     
-    <ListCountries countries={countryData} filterText = {filterText}></ListCountries>
+    <ListCountries countries={filterCountries()} filterText = {filterText} handleClick ={handleButton}></ListCountries>
     </ul>
   </div>  );
 }
