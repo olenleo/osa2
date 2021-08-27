@@ -1,11 +1,8 @@
 import React from 'react'
-
-
-const Person = ({person}) =>  {
+const Person = ({person, deletePerson}) =>  {
     return(
-        <li key={person.name}>{person.name} - {person.number} </li>
+       <p>{person.name} - {person.number} <button onClick={deletePerson}>Poista</button></p> 
     )
 }
-
 
 export default Person
