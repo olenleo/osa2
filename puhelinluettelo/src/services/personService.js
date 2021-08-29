@@ -11,6 +11,7 @@ const getAll = () => {
   }
   
   const update = (id, newObject) => {
+    console.log('service here \n you called \n update Person method for id ' , id )
     return axios.put(`${baseUrl}/${id}`, newObject)
   }
   
