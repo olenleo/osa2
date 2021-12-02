@@ -18,24 +18,28 @@ const App = () => {
     personService
     .getAll()
     .then(response => {
-      setPersons(response.data)
+      setPersons(response) 
     })
   }, [])
 
+  const createInteger = () => {
+      return Math.floor(Math.random() * 100000);
+  }
+ 
   const showNotification = () => {
     console.log('Klick')
     setTimeout(() => {
       setNotificationMessage(null)
       setNotificationType(null)
-     
     }, 5000)
   }
 
   const handlePersonUpdate = (id) => {
     if (window.confirm(`${newName} is already added to phonebook. Update phone number?`)) {
       const updatedPersonObject = {
+        id: id,
         name: newName,
-        number: newNumber,
+        number: newNumber
       }
       personService.update(id, updatedPersonObject)
         .then(response => {
@@ -54,31 +58,38 @@ const App = () => {
     event.preventDefault()
     if (persons.find(person => (person.name === newName))) {
       const persID = persons.find(p => p.name === newName).id
+      console.log('AddNewPerson persID.id', persID)
       handlePersonUpdate(persID) // find persons id
       event.target.reset()
     } else {
+      const newId = createInteger()
     const personObject = {
+        id: newId,
         name: newName,
-        number: newNumber,
+        number: newNumber
       }
-    personService.create(personObject)
+      personService.create(personObject)
       .then(response => {
         console.log("Logging pers object" , personObject)
         console.log('Logging db', persons.find(p => p.name === newName))
         setNotificationMessage(`${newName} added!`)
         setNotificationType('success')
         setPersons([...persons, personObject])
-      })
-        
-    }
-    
+      }).catch(error => {       
+        console.log('THIS IS THE ERROR:')
+        console.log(error.response.data)
+        console.log("Tämä:" , error.response.data.error)
+        let s = error.response.data.error
+        setNotificationMessage(`Input error: \n${s}`)
+        setNotificationType('error') 
+    })
     event.target.reset()
     showNotification()
+    }
   }
-
   const deletePerson = (id) => {
     const personToDelete = persons.find(p => p.id === id)
-    console.log('Person to delete', personToDelete)
+    console.log('Person to delete', personToDelete, 'id', personToDelete.id)
     if (window.confirm(`Delete contacts for ${personToDelete.name}?`)) {
     personService.deletePerson(id)
     .then(response=> {

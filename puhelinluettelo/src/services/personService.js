@@ -1,17 +1,17 @@
 import axios from 'axios'
-
-const baseUrl = 'http://localhost:3001/persons'
+const baseUrl = '/api/persons'
 
 const getAll = () => {
-    return axios.get(baseUrl)
-  }
-  
+  const request = axios.get(baseUrl)
+  return request.then(response => response.data)
+}
+
   const create = newObject => {
     return axios.post(baseUrl, newObject)
   }
   
   const update = (id, newObject) => {
-    console.log('service here \n you called \n update Person method for id ' , id )
+    console.log('service here \n you called \n update Person method for id ' , newObject)
     return axios.put(`${baseUrl}/${id}`, newObject)
   }
   
